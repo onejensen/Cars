@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/car.css">
+    <title>Cars</title>
+</head>
+{{$path := .Path}}
+<body>
+    <header>
+        <a href="/"><h1 class="title">...CARS/{{ $path}}..</h1></a>
+    </header>
+    <br>
+    <div class="filter">
+        <h2>What are you looking for?</h2>
+        <form action="/filter" class="select">
+            <select name="manufacturerID">
+                <option value="" >Manufacturer</option>
+                {{range .Manufacturers}}
+                <option value="{{.ID}}" >{{.Name}}</option>
+                {{end}}
+            </select>
+            <select name="categoryID">
+                <option value="" >Category</option>
+                {{range .Categories}}
+                <option value="{{.ID}}">{{.Name}}</option>
+                {{end}}
+            </select>
+                <input type="text" placeholder="from year" id="minYear" name="minYear" size="4">
+                <input type="text" placeholder="to year" id="maxYear" name="maxYear" size="4">
+            <button type="submit" >Search</button>
+        </form>
+        <button form="compare" type="submit">Compare</button>
+        <button class="button" type="button" onclick="location.href='/last';">Last viewed</button>
+        <button class="button" onclick="location.href='/';" type="submit">Clear selected</button>
+    </div>
+    <div >
+        {{if .Models}}
+            <form id="compare" action="/compare" class="main">    
+                {{ range .Models }}
+                    {{if ne $path "compare"}}
+                        <a href="/car?id={{ .ID}}"  class="card"  id="{{ .ID}}" style="background-image: url('http://localhost:3000/api/images/{{ .Image }}');">
+                                <div class="carInfo">
+                                    <h3>{{ .Name }}</h3>
+                                    <p class="year">{{ .Year }}</p>                                      
+                                </div>
+                                {{if ne $path "last_viewed"}}
+                                <div class="compareCheckbox">
+                                    <p>Compare</p>
+                                    <input class="checkbox" type="checkbox" name="IDs" value="{{ .ID}}">
+                                </div>
+                                {{end}}
+                        </a>
+                    {{else}}
+                        <div class="car">
+                            <p class="specs"><a href="/car?id={{ .ID}}">{{ .Name }}</a></p>
+                            <p>Manufacturer: {{ .Manufacturer }}</p>
+                            <p>Category: {{ .Category }}</p>
+                            <p>Year: {{ .Year }}</p>
+                            <p span class="specs">Specifications</p>
+                            <p>Engine: {{ .Specifications.Engine }}</p>
+                            <p>Horsepower: {{ .Specifications.Horsepower }}</p>
+                            <p>Transmission: {{ .Specifications.Transmission }}</p>
+                            <p>Drivetrain: {{ .Specifications.Drivetrain }}</p>
+                            
+                            <img src="http://localhost:3000/api/images/{{.Image}}" alt="{{ .Name }}">
+                        </div>
+                    {{end}}       
+                {{ end }}
+            </form>
+        {{else}}        
+        <h1>No info found</h1>
+        {{end}}
+    </div>
+</body>
+<footer>
+    All rights reserved to <a class="cat" href="http://localhost:3000/api/images/cat.jpeg" target="_blank">Juanjo & Vasilii</a>
+</footer>
+</html>

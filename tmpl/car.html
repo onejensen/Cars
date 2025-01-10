@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="/static/css/car.css">
+        <title>Car: {{ .Name}}</title>
+    </head>
+    <body>
+        {{if ne .ID 0 }}
+        <a class="back" href="/">back to ..CARS/</a>
+        <header>
+            <h1><a href="/car?id={{ .ID}}">{{ .Name}}</a></h1>
+        </header>                
+            <div class="car">
+                <p><span>Manufacturer:</span> {{ .Manufacturer }}</p>
+                <p><span>Founding year:</span> {{ .FoundingYear }}</p>
+                <p><span>Country:</span> {{ .Country }}</p>
+                <p><span>Category:</span> {{ .Category }}</p>
+                <p><span>Year:</span> {{ .Year }}</p>
+                <br>
+                <p><span class="specs">Specifications</span></p>
+                <div>
+                    <p><span>Engine:</span> {{ .Specifications.Engine }}</p>
+                    <p><span>Horsepower:</span> {{ .Specifications.Horsepower }}hp</p>
+                    <p><span>Transmission:</span> {{ .Specifications.Transmission }}</p>
+                    <p><span>Drivetrain:</span> {{ .Specifications.Drivetrain }}</p>
+                </div>
+                <img src="http://localhost:3000/api/images/{{.Image}}" alt="{{ .Name }}">
+            </div>
+        {{else}}
+            <a class="back" href="/">back to ..CARS/</a>
+            <h1>Car not found</h1>
+            <img class="broken" src="http://localhost:3000/api/images/brokencar.png" alt="broken">
+        {{end}}
+    </body>
+</html>
